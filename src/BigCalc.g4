@@ -1,18 +1,15 @@
 grammar BigCalc;
 
-// <statement>;
 expressionStatement
         : expression ';' EOF
         ;
 
-// <expression> * 9
 expression  
         : expression op=('*' | '/') expression  # mulDiv
         | expression op=('+' | '-') expression  # addSub
         | Number                                # num
         ;
 
-// 1.0
 Number  
         : Digit* '.' Digit+
         | Digit+
