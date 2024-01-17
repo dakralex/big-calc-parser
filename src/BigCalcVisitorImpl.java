@@ -5,13 +5,13 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
 
     @Override
     public BigDecimal visitExpressionStatement(BigCalcParser.ExpressionStatementContext ctx) {
-	return visit(ctx.expression());
+        return visit(ctx.expression());
     }
 
     @Override
     public BigDecimal visitMulDiv(BigCalcParser.MulDivContext ctx) {
-        final BigDecimal left = visit(ctx.expression(0));
-        final BigDecimal right = visit(ctx.expression(1));
+        BigDecimal left = visit(ctx.expression(0));
+        BigDecimal right = visit(ctx.expression(1));
         if (ctx.op.getText().equals("*")) {
             return left.multiply(right);
         } else {
@@ -21,8 +21,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
 
     @Override
     public BigDecimal visitAddSub(BigCalcParser.AddSubContext ctx) {
-        final BigDecimal left = visit(ctx.expression(0));
-        final BigDecimal right = visit(ctx.expression(1));
+        BigDecimal left = visit(ctx.expression(0));
+        BigDecimal right = visit(ctx.expression(1));
         if (ctx.op.getText().equals("+")) {
             return left.add(right);
         } else {
