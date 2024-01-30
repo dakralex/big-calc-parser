@@ -1,14 +1,12 @@
 grammar BigCalcProg;
 
 program
-        : progStatement
+        : progStatement+ EOF
         ;
 
 progStatement
-        : progStatement ';' progStatement
-        | assignment
-        | expression
-        | EOF
+        : assignment ';' #assigmentStatement
+        | expression ';' #expressionStatement
         ;
 
 assignment

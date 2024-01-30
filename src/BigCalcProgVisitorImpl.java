@@ -3,8 +3,29 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 
 public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
-    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(0);
+    private static final BigDecimal DEFAULT_VALUE = BigDecimal.ZERO;
     private final HashMap<String, BigDecimal> variables = new HashMap<>(0);
+
+    @Override
+    public BigDecimal visitProgram(BigCalcProgParser.ProgramContext ctx) {
+        BigDecimal res = DEFAULT_VALUE;
+
+        for (BigCalcProgParser.ProgStatementContext progStmtCtx : ctx.progStatement()) {
+            res = visit(progStmtCtx);
+        }
+
+        return res;
+    }
+
+    @Override
+    public BigDecimal visitAssigmentStatement(BigCalcProgParser.AssigmentStatementContext ctx) {
+        return visit(ctx.assignment());
+    }
+
+    @Override
+    public BigDecimal visitExpressionStatement(BigCalcProgParser.ExpressionStatementContext ctx) {
+        return visit(ctx.expression());
+    }
 
     @Override
     public BigDecimal visitAssignment(BigCalcProgParser.AssignmentContext ctx) {
@@ -42,8 +63,7 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
 
         return switch (ctx.op.getText()) {
             case "+" -> left.add(right);
-            case "-" -> left.subtract(right);
-            default -> left; // TODO What about errors?
+            default -> left.subtract(right);
         };
     }
 
@@ -54,8 +74,7 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
 
         return switch (ctx.op.getText()) {
             case "*" -> left.multiply(right);
-            case "/" -> left.divide(right, 10, RoundingMode.HALF_UP);
-            default -> left; // TODO What about errors?
+            default -> left.divide(right, 10, RoundingMode.HALF_UP);
         };
     }
 }

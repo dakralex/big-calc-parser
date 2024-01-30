@@ -13,15 +13,15 @@ public class BigCalcProg {
             BigCalcProgLexer lexer = new BigCalcProgLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             BigCalcProgParser parser = new BigCalcProgParser(tokens);
-            ParseTree tree = parser.progStatement();
+            ParseTree tree = parser.program();
 
-            BigCalcVisitor<BigDecimal> visitor = new BigCalcVisitorImpl();
+            BigCalcProgVisitor<BigDecimal> visitor = new BigCalcProgVisitorImpl();
             BigDecimal result = visitor.visit(tree);
 
             if (result != null)
                 System.out.printf("result: %s%n", result.setScale(10, RoundingMode.HALF_UP));
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("usage: usage: java BigCalc <file>");
+            System.out.println("usage: usage: java BigCalcProg <file>");
         } catch (Exception e) {
             System.out.println(e);
         }
