@@ -2,17 +2,21 @@ LIB_PATH = lib
 SRC_PATH = src
 BUILD_PATH = build
 
-PROG = BigCalc
+ANTLR_VERSION = "4.7.1"
+ANTLR_COMPLETE_FILE = "antlr4-${ANTLR_VERSION}-complete.jar"
+
+PROG = BigCalcProg
+
 
 compile:
-	java -jar "${LIB_PATH}/antlr4-4.7.1-complete.jar" -lib "${SRC_PATH}" -visitor "${SRC_PATH}/$(PROG).g4"
-	javac -d "${BUILD_PATH}" -cp "${LIB_PATH}/antlr4-4.7.1-complete.jar:${SRC_PATH}" -sourcepath "${SRC_PATH}" ${SRC_PATH}/$(PROG)*.java
+	java -jar "${LIB_PATH}/${ANTLR_COMPLETE_FILE}" -lib "${SRC_PATH}" -visitor "${SRC_PATH}/$(PROG).g4"
+	javac -d "${BUILD_PATH}" -cp "${LIB_PATH}/${ANTLR_COMPLETE_FILE}:${SRC_PATH}" -sourcepath "${SRC_PATH}" ${SRC_PATH}/$(PROG)*.java
 
 run: compile
-	java -cp "${LIB_PATH}/antlr4-4.7.1-complete.jar:${BUILD_PATH}" $(PROG) $(file)
+	java -cp "${LIB_PATH}/${ANTLR_COMPLETE_FILE}:${BUILD_PATH}" $(PROG) $(file)
 
 viz: compile
-	java -cp "${LIB_PATH}/antlr4-4.7.1-complete.jar:${BUILD_PATH}" org.antlr.v4.gui.TestRig $(PROG) expression -gui
+	java -cp "${LIB_PATH}/${ANTLR_COMPLETE_FILE}:${BUILD_PATH}" org.antlr.v4.gui.TestRig $(PROG) expression -gui
 
 clean:
 	rm -f ${BUILD_PATH}/*.class
