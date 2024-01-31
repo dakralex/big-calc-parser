@@ -60,21 +60,25 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
     public BigDecimal visitAddSub(BigCalcProgParser.AddSubContext ctx) {
         BigDecimal left = visit(ctx.expression(0));
         BigDecimal right = visit(ctx.expression(1));
+        String operator = ctx.op.getText();
 
-        return switch (ctx.op.getText()) {
-            case "+" -> left.add(right);
-            default -> left.subtract(right);
-        };
+        if (operator.equals("+")) {
+            return left.add(right);
+        } else {
+            return left.subtract(right);
+        }
     }
 
     @Override
     public BigDecimal visitMulDiv(BigCalcProgParser.MulDivContext ctx) {
         BigDecimal left = visit(ctx.expression(0));
         BigDecimal right = visit(ctx.expression(1));
+        String operator = ctx.op.getText();
 
-        return switch (ctx.op.getText()) {
-            case "*" -> left.multiply(right);
-            default -> left.divide(right, 10, RoundingMode.HALF_UP);
-        };
+        if (operator.equals("*")) {
+            return left.multiply(right);
+        } else {
+            return left.divide(right, 10, RoundingMode.HALF_UP);
+        }
     }
 }
