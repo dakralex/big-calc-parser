@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.util.HashMap;
 
 public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
@@ -28,6 +29,24 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
     }
 
     @Override
+    public BigDecimal visitConditional(BigCalcProgParser.ConditionalContext ctx) {
+        boolean meetsCondition = visit(ctx.expression(0)).doubleValue() != 0.0;
+
+        return visit(ctx.expression(meetsCondition ? 1 : 2));
+    }
+
+    @Override
+    public BigDecimal visitIfStatement(BigCalcProgParser.IfStatementContext ctx) {
+        boolean meetsCondition = visit(ctx.expression()).doubleValue() != 0.0;
+
+        if (meetsCondition) {
+            return visit(ctx.progStatement(0));
+        } else {
+            return visit(ctx.progStatement(1));
+        }
+    }
+
+    @Override
     public BigDecimal visitAssignment(BigCalcProgParser.AssignmentContext ctx) {
         String varName = ctx.VariableName().getText();
         BigDecimal varValue = visit(ctx.expression());
@@ -43,7 +62,13 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
 
         BigDecimal varValue = variables.putIfAbsent(varName, DEFAULT_VALUE);
 
-        return varValue != null ? varValue : DEFAULT_VALUE;
+        if (varValue == null) {
+            System.out.println(MessageFormat.format("Warning: undefined variable: {0}", varName));
+
+            return DEFAULT_VALUE;
+        } else {
+            return varValue;
+        }
     }
 
     @Override
@@ -62,7 +87,7 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
         BigDecimal right = visit(ctx.expression(1));
         String operator = ctx.op.getText();
 
-        if (operator.equals("+")) {
+        if ("+".equals(operator)) {
             return left.add(right);
         } else {
             return left.subtract(right);
@@ -75,7 +100,7 @@ public class BigCalcProgVisitorImpl extends BigCalcProgBaseVisitor<BigDecimal> {
         BigDecimal right = visit(ctx.expression(1));
         String operator = ctx.op.getText();
 
-        if (operator.equals("*")) {
+        if ("*".equals(operator)) {
             return left.multiply(right);
         } else {
             return left.divide(right, 10, RoundingMode.HALF_UP);

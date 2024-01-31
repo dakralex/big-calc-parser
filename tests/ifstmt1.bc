@@ -1,0 +1,6 @@
+// output of this program is:
+// result: 1.0000000000
+
+x=3.1;
+
+if (x) e=1; else e=2;

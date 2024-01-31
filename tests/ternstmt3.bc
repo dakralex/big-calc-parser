@@ -1,0 +1,4 @@
+// output of this program is:
+// result: 5.0000000000
+
+R = 0.0 ? 1.0 ? 2 : 3 : ((0.0 ? 4 : 5)) ;

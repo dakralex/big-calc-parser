@@ -1,0 +1,6 @@
+// output of this program is:
+// result: 42.0000000000
+c=6;
+x=1;
+
+c = x ? 42 : 43;

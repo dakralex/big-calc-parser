@@ -1,0 +1,4 @@
+// output of this program is:
+// result: -5.8600000000
+
+Z = -3.14 + -2.72 + 1 - 1.0;

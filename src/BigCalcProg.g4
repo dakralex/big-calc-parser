@@ -5,8 +5,9 @@ program
         ;
 
 progStatement
-        : assignment ';' #assigmentStatement
-        | expression ';' #expressionStatement
+        : assignment ';'                                        #assigmentStatement
+        | expression ';'                                        #expressionStatement
+        | 'if' expression progStatement 'else' progStatement    #ifStatement
         ;
 
 assignment
@@ -14,11 +15,12 @@ assignment
         ;
 
 expression
-        : expression op=('*' | '/') expression  #mulDiv
-        | expression op=('+' | '-') expression  #addSub
-        | '(' expression ')'                    #parens
-        | VariableName                          #var
-        | Number                                #num
+        : expression '?' expression ':' expression              #conditional
+        | expression op=('*' | '/') expression                  #mulDiv
+        | expression op=('+' | '-') expression                  #addSub
+        | '(' expression ')'                                    #parens
+        | VariableName                                          #var
+        | Number                                                #num
         ;
 
 VariableName
@@ -26,8 +28,9 @@ VariableName
         ;
 
 Number
-        : Digit* '.' Digit+
-        | Digit+
+        : ('-'|'+')? Digit* '.' Digit+ ('e'|'E') ('-'|'+')? Digit+
+        | ('-'|'+')? Digit* '.' Digit+
+        | ('-'|'+')? Digit+
         | [0-9]
         ;
 

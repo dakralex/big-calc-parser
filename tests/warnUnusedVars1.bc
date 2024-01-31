@@ -1,0 +1,7 @@
+// output of this program is:
+// Warning: undefined variable: e
+// result: 3.0000000000
+
+p=3;
+
+z=p+e;

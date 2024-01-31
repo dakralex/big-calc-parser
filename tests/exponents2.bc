@@ -1,0 +1,7 @@
+// output of this program is:
+// result: 3343220.7000000000
+
+A = 33.32E+5;
+B = 11.22E3;
+
+A+B+0.7;
